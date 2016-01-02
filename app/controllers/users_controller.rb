@@ -1,4 +1,6 @@
 require 'forecast_io'
+require 'date'
+
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -42,6 +44,8 @@ class UsersController < ApplicationController
       ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
       forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
       @user.current_weather = forecast[:currently].summary
+      @user.temperature = forecast[:currently].temperature
+      @user.time = Time.at(forecast[:currently].time)
       @user.save
     end
   end
@@ -60,6 +64,8 @@ class UsersController < ApplicationController
       ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
       forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
       @user.current_weather = forecast[:currently].summary
+      @user.temperature = forecast[:currently].temperature
+      @user.time = Time.at(forecast[:currently].time)
       @user.save
     end
   end
