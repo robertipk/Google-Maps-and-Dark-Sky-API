@@ -1,3 +1,4 @@
+require 'forecast_io'
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -38,6 +39,10 @@ class UsersController < ApplicationController
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+      ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
+      forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
+      @user.current_weather = forecast[:currently].summary
+      @user.save
     end
   end
 
@@ -52,6 +57,10 @@ class UsersController < ApplicationController
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+      ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
+      forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
+      @user.current_weather = forecast[:currently].summary
+      @user.save
     end
   end
 
