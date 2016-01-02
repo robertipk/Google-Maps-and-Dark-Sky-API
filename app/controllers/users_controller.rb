@@ -45,6 +45,8 @@ class UsersController < ApplicationController
       forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
       @user.current_weather = forecast[:currently].summary
       @user.temperature = forecast[:currently].temperature
+      @user.timezone = forecast[:timezone]
+      @user.offset = forecast[:offset]
       @user.time = Time.at(forecast[:currently].time)
       @user.save
     end
@@ -65,6 +67,8 @@ class UsersController < ApplicationController
       forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
       @user.current_weather = forecast[:currently].summary
       @user.temperature = forecast[:currently].temperature
+      @user.timezone = forecast[:timezone]
+      @user.offset = forecast[:offset]
       @user.time = Time.at(forecast[:currently].time)
       @user.save
     end
