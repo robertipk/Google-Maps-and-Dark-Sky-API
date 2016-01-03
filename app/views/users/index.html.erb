@@ -62,7 +62,29 @@
  
   handler = Gmaps.build('Google');
   handler.buildMap({
-    provider: {
+    provider: {styles:
+      [
+  {
+    "featureType": "landscape.natural.terrain",
+    "elementType": "geometry.fill",
+    "stylers": [
+      { "hue": "#0044ff" },
+      { "color": "#108080" }
+    ]
+  },{
+    "featureType": "transit.station.airport",
+    "elementType": "labels",
+    "stylers": [
+      { "visibility": "on" },
+      { "hue": "#ff4400" }
+    ]
+  },{
+    "featureType": "landscape.man_made",
+    "stylers": [
+      { "hue": "#ff3c00" }
+    ]
+  }
+]
     },
     internal: {
       id: 'map'
