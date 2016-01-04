@@ -36,6 +36,14 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
+        forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
+        @user.current_weather = forecast[:currently].summary
+        @user.temperature = forecast[:currently].temperature
+        @user.timezone = forecast[:timezone]
+        @user.offset = forecast[:offset]
+        @user.time = Time.at(forecast[:currently].time)
+        @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
