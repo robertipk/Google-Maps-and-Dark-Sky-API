@@ -42,6 +42,7 @@ class UsersController < ApplicationController
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+=begin
       ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
       forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
       @user.current_weather = forecast[:currently].summary
@@ -50,6 +51,7 @@ class UsersController < ApplicationController
       @user.offset = forecast[:offset]
       @user.time = Time.at(forecast[:currently].time)
       @user.save
+=end
     end
   end
 
