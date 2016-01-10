@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160110192848) do
+ActiveRecord::Schema.define(version: 20160110200619) do
 
   create_table "users", force: :cascade do |t|
     t.float    "latitude"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20160110192848) do
     t.string   "timezone"
     t.string   "offset"
     t.string   "URL"
+    t.string   "Phototime"
+    t.string   "Cloudindex"
   end
 
 end

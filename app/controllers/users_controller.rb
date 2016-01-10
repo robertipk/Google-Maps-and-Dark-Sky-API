@@ -21,8 +21,11 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    response = HTTParty.get('https://api.nasa.gov/planetary/earth/imagery?lon=100.75&lat=1.5&date=2014-02-01&cloud_score=True&api_key=DEMO_KEY')    
+    response = retrieve_NASA_image(@user)  
     @user.URL = response["url"]
+    @user.Phototime = response["date"]
+    @user.Cloudindex = response["cloud_score"]
+
   end
 
   # GET /users/new
@@ -97,5 +100,10 @@ class UsersController < ApplicationController
         user.offset = forecast[:offset]
         user.time = Time.at(forecast[:currently].time)
         user.save
+    end
+
+    def retrieve_NASA_image(user)
+      query = "https://api.nasa.gov/planetary/earth/imagery?lon=" + user.longitude.to_s + "&lat=" + user.latitude.to_s + "&date=2015-07-01&cloud_score=True&api_key=DEMO_KEY"
+      response = HTTParty.get(query) 
     end
 end

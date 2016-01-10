@@ -25,7 +25,8 @@
   <%= @user.title %>
 </p>
 
-<p>Satellite Image<p>
+<p>Satellite image taken at <strong><%= @user.Phototime %></strong> by NASA's Landsat 8 observation satellite <p>
+<p>Percentage of image covered by clouds (cloud score): <strong><%= @user.Cloudindex %></strong> </p>
   <%= image_tag(@user.URL) if @user.URL %>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
