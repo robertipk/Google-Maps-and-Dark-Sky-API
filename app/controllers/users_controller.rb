@@ -36,7 +36,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        @user.get_weather
+        forecast = getWeather(@user.latitude,@user.longitude)
+        update_weather(@user, forecast)
+        
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -67,14 +69,8 @@ class UsersController < ApplicationController
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-      ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
-      forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
-      @user.current_weather = forecast[:currently].summary
-      @user.temperature = forecast[:currently].temperature
-      @user.timezone = forecast[:timezone]
-      @user.offset = forecast[:offset]
-      @user.time = Time.at(forecast[:currently].time)
-      @user.save
+      forecast = getWeather(@user.latitude,@user.longitude)
+      update_weather(@user, forecast)
     end
   end
 
@@ -97,5 +93,14 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:latitude, :longitude, :name, :address, :title)
+    end
+
+    def update_weather(user,forecast)
+        user.current_weather = forecast[:currently].summary
+        user.temperature = forecast[:currently].temperature
+        user.timezone = forecast[:timezone]
+        user.offset = forecast[:offset]
+        user.time = Time.at(forecast[:currently].time)
+        user.save
     end
 end
