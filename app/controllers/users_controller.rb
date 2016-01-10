@@ -1,7 +1,10 @@
 require 'forecast_io'
+require 'HTTParty'
 require 'date'
 
+
 class UsersController < ApplicationController
+  include HTTParty
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -18,6 +21,8 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    response = HTTParty.get('https://api.nasa.gov/planetary/earth/imagery?lon=100.75&lat=1.5&date=2014-02-01&cloud_score=True&api_key=DEMO_KEY')    
+    @user.URL = response["url"]
   end
 
   # GET /users/new
@@ -45,16 +50,6 @@ class UsersController < ApplicationController
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-=begin
-      ForecastIO.api_key = 'dc105edc628388d692f7af6a159918d7'
-      forecast = ForecastIO.forecast(@user.latitude, @user.longitude)
-      @user.current_weather = forecast[:currently].summary
-      @user.temperature = forecast[:currently].temperature
-      @user.timezone = forecast[:timezone]
-      @user.offset = forecast[:offset]
-      @user.time = Time.at(forecast[:currently].time)
-      @user.save
-=end
     end
   end
 
